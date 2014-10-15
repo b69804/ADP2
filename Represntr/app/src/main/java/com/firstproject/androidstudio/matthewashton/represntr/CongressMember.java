@@ -17,6 +17,11 @@ public class CongressMember implements Serializable {
     private String party;
     private String missedVotes;
     private String votesWithParty;
+    private String dob;
+    private String website;
+    private String lastVote;
+    private String billsSponsored;
+    private String apiCall;
     private int randomID;
 
     public CongressMember (int id, String congressID){
@@ -89,5 +94,45 @@ public class CongressMember implements Serializable {
 
     public void setRandomID(int randomID) {
         this.randomID = randomID;
+    }
+
+    public String getApiCall() {
+        return apiCall;
+    }
+
+    public void setApiCall(String apiCall) {
+        this.apiCall = apiCall;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getLastVote() {
+        return lastVote;
+    }
+
+    public void setLastVote(String lastVote) {
+        this.lastVote = lastVote;
+    }
+
+    public String getBillsSponsored() {
+        return billsSponsored;
+    }
+
+    public void setBillsSponsored(String billsSponsored) {
+        this.billsSponsored = billsSponsored;
     }
 }

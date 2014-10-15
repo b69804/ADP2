@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.firstproject.androidstudio.matthewashton.represntr.PersonDetail$PlaceholderFragment">
+
+    <TextView
+        android:hint="Selected Name"
+        android:id="@+id/individualName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:hint="Selected State"
+        android:id="@+id/individualState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/individualName"/>
+
+    <TextView
+        android:hint="Selected Party"
+        android:id="@+id/individualParty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/individualState"/>
+
+    <TextView
+        android:hint="Selected Congress"
+        android:id="@+id/individualCongressBranch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/individualParty"/>
+
+    <TextView
+        android:hint="Selected DOB"
+        android:id="@+id/dob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/individualCongressBranch"/>
+
+    <TextView
+        android:hint="Selected Bills Sponsored"
+        android:id="@+id/billsSponsored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dob"/>
+
+    <TextView
+        android:hint="Selected Votes with Party"
+        android:id="@+id/votesWithParty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/billsSponsored"/>
+
+    <TextView
+        android:hint="Selected Missed Votes"
+        android:id="@+id/votesMissed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/votesWithParty"/>
+
+    <TextView
+        android:hint="Selected Last Vote"
+        android:id="@+id/lastVote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/votesMissed"/>
+
+    <Button
+        android:hint="Selected Website"
+        android:id="@+id/website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lastVote"
+        android:layout_marginTop="20dp"
+        android:textColor="#0060B6"/>
+
+</RelativeLayout>

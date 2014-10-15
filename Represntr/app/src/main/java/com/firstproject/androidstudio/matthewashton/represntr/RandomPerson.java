@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -106,9 +107,6 @@ public class RandomPerson extends Activity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
@@ -116,13 +114,9 @@ public class RandomPerson extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
         String apiData;
         List<CongressMember> SenateList;
-        List<CongressMember> HouseList;
         List<CongressMember> cList = new ArrayList<CongressMember>() {};
         CongressMember testMember;
         TextView personName;
@@ -130,16 +124,9 @@ public class RandomPerson extends Activity
         TextView personHouseOrSenate;
         Button next;
         Button addToFavs;
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
+
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -157,6 +144,7 @@ public class RandomPerson extends Activity
             View rootView = inflater.inflate(R.layout.fragment_random_person, container, false);
             personName = (TextView)rootView.findViewById(R.id.personName);
             personState = (TextView)rootView.findViewById(R.id.personState);
+            personHouseOrSenate = (TextView)rootView.findViewById(R.id.personCongress);
             addToFavs = (Button)rootView.findViewById(R.id.like);
             addToFavs.setVisibility(View.INVISIBLE);
             next = (Button)rootView.findViewById(R.id.dislike);
@@ -166,6 +154,14 @@ public class RandomPerson extends Activity
                     getPerson();
                     display();
                     addToFavs.setVisibility(View.VISIBLE);
+                }
+            });
+            addToFavs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent1 = new Intent(getActivity(), PersonDetail.class);
+                    intent1.putExtra("apiCall", testMember.getApiCall());
+                    startActivity(intent1);
                 }
             });
             return rootView;
@@ -183,6 +179,9 @@ public class RandomPerson extends Activity
             super.onCreate(savedInstanceState);
             requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/senate/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
             requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/house/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
+            if(savedInstanceState !=null){
+                System.out.println("Saved Instance State is not null.");
+            }
         }
 
         public void createFile() throws IOException{
@@ -215,6 +214,7 @@ public class RandomPerson extends Activity
             System.out.println(cList.size());
             personName.setText(testMember.getName());
             personState.setText(testMember.getState());
+            personHouseOrSenate.setText(testMember.getHouseOrSenate());
         }
 
         private void requestData(String uri){
