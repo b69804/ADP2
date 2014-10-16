@@ -20,9 +20,10 @@ import android.widget.Button;
 
 import org.w3c.dom.Text;
 
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
-
+import java.io.ObjectInputStream;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -116,6 +117,7 @@ public class RandomPerson extends Activity
 
     public static class PlaceholderFragment extends Fragment {
         String apiData;
+        String fullAPIData;
         List<CongressMember> SenateList;
         List<CongressMember> cList = new ArrayList<CongressMember>() {};
         CongressMember testMember;
@@ -177,30 +179,58 @@ public class RandomPerson extends Activity
         @Override
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
-            requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/senate/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
-            requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/house/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
+            try {
+                readFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("File does not exist.");
+                requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/senate/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
+                requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/house/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
+
+            }
             if(savedInstanceState !=null){
                 System.out.println("Saved Instance State is not null.");
             }
         }
 
-        public void createFile() throws IOException{
-            FileOutputStream fos = getActivity().openFileOutput("congressData.txt", Context.MODE_PRIVATE);
+        public void createSenateFile() throws IOException{
+            FileOutputStream fos = getActivity().openFileOutput("APISenateData.txt", Context.MODE_PRIVATE);
             fos.write(apiData.getBytes());
             fos.close();
         }
 
+        public void createHouseFile() throws IOException{
+            FileOutputStream fos = getActivity().openFileOutput("APIHouseData.txt", Context.MODE_PRIVATE);
+            fos.write(fullAPIData.getBytes());
+            fos.close();
+        }
+
         public void readFile() throws IOException{
-            FileInputStream fis = getActivity().openFileInput("congressData.txt");
+            FileInputStream fis = getActivity().openFileInput("APISenateData.txt");
             BufferedInputStream bis = new BufferedInputStream(fis);
             StringBuffer b = new StringBuffer();
-            while (bis.available() != 0){
+            while (bis.available() != 0) {
                 char c = (char) bis.read();
                 b.append(c);
             }
             apiData = b.toString();
             bis.close();
             fis.close();
+            SenateList = JSONParser.parseFeed(apiData);
+            cList.addAll(SenateList);
+
+            fis = getActivity().openFileInput("APIHouseData.txt");
+            bis = new BufferedInputStream(fis);
+            b = new StringBuffer();
+            while (bis.available() != 0) {
+                char c = (char) bis.read();
+                b.append(c);
+            }
+            fullAPIData = b.toString();
+            bis.close();
+            fis.close();
+            SenateList = JSONParser.parseFeed(fullAPIData);
+            cList.addAll(SenateList);
         }
 
         public void getPerson(){
@@ -236,16 +266,26 @@ public class RandomPerson extends Activity
 
             @Override
             protected void onPostExecute(String result) {
-                apiData = result;
-                try {
-                    createFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (apiData == null) {
+                    apiData = result;
+                    try {
+                        createSenateFile();
+                        System.out.println("Created Senate File");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    fullAPIData = result;
+                    try {
+                        createHouseFile();
+                        System.out.println("Created House File");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 SenateList = JSONParser.parseFeed(result);
                 System.out.println(SenateList);
                 cList.addAll(SenateList);
-
             }
         }
     }

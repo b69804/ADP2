@@ -74,6 +74,7 @@ public class JSONParser {
             String personMissedVotes = roles.getString("missed_votes_pct");
             String personVotesWithParty = roles.getString("votes_with_party_pct");
             String personBills = roles.getString("bills_sponsored");
+            String personLastVote = ar.getString("most_recent_vote");
 
             String fullName = firstName + " " + lastName;
             eachPerson = new CongressMember(thomasID, tomID);
@@ -87,6 +88,7 @@ public class JSONParser {
             eachPerson.setMissedVotes(personMissedVotes);
             eachPerson.setVotesWithParty(personVotesWithParty);
             eachPerson.setBillsSponsored(personBills);
+            eachPerson.setLastVote(personLastVote);
             return eachPerson;
         }
 

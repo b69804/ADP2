@@ -2,6 +2,7 @@ package com.firstproject.androidstudio.matthewashton.represntr;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -93,7 +94,6 @@ public class PersonDetail extends Activity {
         }
 
         public void showPerson(){
-            System.out.println(selectedCongressPerson.getName());
             name.setText(selectedCongressPerson.getName());
             state.setText(selectedCongressPerson.getState());
             dob.setText(selectedCongressPerson.getDob());
@@ -104,6 +104,14 @@ public class PersonDetail extends Activity {
             missedVotes.setText(selectedCongressPerson.getMissedVotes());
             lastVote.setText(selectedCongressPerson.getLastVote());
             website.setText(selectedCongressPerson.getWebsite());
+            website.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent2 = new Intent(getActivity(), PersonWebView.class);
+                    intent2.putExtra("website", selectedCongressPerson.getWebsite());
+                    startActivity(intent2);
+                }
+            });
         }
 
         private void requestData(String uri){
