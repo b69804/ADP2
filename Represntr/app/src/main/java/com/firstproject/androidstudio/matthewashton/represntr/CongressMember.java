@@ -135,4 +135,7 @@ public class CongressMember implements Serializable {
     public void setBillsSponsored(String billsSponsored) {
         this.billsSponsored = billsSponsored;
     }
+
+    public static List<CongressMember> CONGRESS_PEOPLE = new ArrayList<CongressMember>();
+
 }

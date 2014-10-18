@@ -17,13 +17,15 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 import android.widget.Button;
+import android.content.SharedPreferences;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.ObjectInputStream;
+import java.io.FileWriter;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -63,9 +65,19 @@ public class RandomPerson extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+        switch (position) {
+            case 0:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .commit();
+                break;
+            case 1:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, FavListFragment.newInstance(position + 1))
+                        .commit();
+                break;
+        }
+
     }
 
     public void onSectionAttached(int number) {
@@ -127,6 +139,7 @@ public class RandomPerson extends Activity
         Button next;
         Button addToFavs;
 
+
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public static PlaceholderFragment newInstance(int sectionNumber) {
@@ -161,12 +174,46 @@ public class RandomPerson extends Activity
             addToFavs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(testMember.getHouseOrSenate().equals("House")){
+                        saveToHouseList();
+                    } else {
+                        saveToSenateList();
+                    }
                     Intent intent1 = new Intent(getActivity(), PersonDetail.class);
                     intent1.putExtra("apiCall", testMember.getApiCall());
                     startActivity(intent1);
                 }
             });
             return rootView;
+        }
+
+        private void saveToSenateList() {
+            List<CongressMember> senateList = new ArrayList<CongressMember>();
+            senateList.add(testMember);
+            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+            SharedPreferences.Editor editor = pref.edit();
+            String json = new Gson().toJson(senateList);
+            editor.putString("SenateList", json);
+            editor.apply();
+        }
+
+        private void saveToHouseList() {
+            //List<CongressMember> houseList = new ArrayList<CongressMember>();
+            //houseList.add(testMember);
+            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+            SharedPreferences.Editor editor = pref.edit();
+            String json = new Gson().toJson(testMember);
+            System.out.println(json);
+            try {
+                //FileWriter writer = new FileWriter("c:\\Housefile.json");
+                FileOutputStream fos = getActivity().openFileOutput("houseFile.txt", Context.MODE_PRIVATE);
+                fos.write(json.getBytes());
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            editor.putString("HouseList", json);
+            editor.apply();
         }
 
         @Override
