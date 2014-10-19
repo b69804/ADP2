@@ -136,6 +136,13 @@ public class CongressMember implements Serializable {
         this.billsSponsored = billsSponsored;
     }
 
-    public static List<CongressMember> CONGRESS_PEOPLE = new ArrayList<CongressMember>();
-
+    public static List<CongressMember> SENATE_PEOPLE = new ArrayList<CongressMember>();
+    public static List<CongressMember> HOUSE_PEOPLE = new ArrayList<CongressMember>();
+    public static Map<String, CongressMember> MAP_OF_HOUSE= new HashMap<String, CongressMember>();
+    public static Map<String, CongressMember> MAP_OF_SENATE= new HashMap<String, CongressMember>();
+    public static List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+    public static Map<String,String> houseMap = new HashMap<String, String>(2);
+    public static List<String> HOUSE_NAMES = new ArrayList<String>();
+    public static List<String> SENATE_NAMES = new ArrayList<String>();
+    public static List<CongressMember> favList = new ArrayList<CongressMember>() {};
 }

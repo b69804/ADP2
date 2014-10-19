@@ -73,7 +73,7 @@ public class PersonDetail extends Activity {
             Bundle b = getArguments();
             String passAPI = b.getString("apiCall");
             apiCall = passAPI.concat("?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
-            System.out.println(apiCall);
+
             requestData(apiCall);
             name = (TextView)rootView.findViewById(R.id.individualName);
             state = (TextView)rootView.findViewById(R.id.individualState);

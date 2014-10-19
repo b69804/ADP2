@@ -3,10 +3,12 @@ package com.firstproject.androidstudio.matthewashton.represntr;
 import android.app.Activity;
 
 import android.app.ActionBar;
+import android.app.IntentService;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.BroadcastReceiver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,45 +19,31 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 import android.widget.Button;
-import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
-
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.FileWriter;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.favList;
 
 public class RandomPerson extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random_person);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-
-        // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -63,7 +51,6 @@ public class RandomPerson extends Activity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         switch (position) {
             case 0:
@@ -76,8 +63,12 @@ public class RandomPerson extends Activity
                         .replace(R.id.container, FavListFragment.newInstance(position + 1))
                         .commit();
                 break;
+            case 3:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, Feedback.newInstance(position + 1))
+                        .commit();
+                break;
         }
-
     }
 
     public void onSectionAttached(int number) {
@@ -108,9 +99,6 @@ public class RandomPerson extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.random_person, menu);
             restoreActionBar();
             return true;
@@ -138,7 +126,6 @@ public class RandomPerson extends Activity
         TextView personHouseOrSenate;
         Button next;
         Button addToFavs;
-
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -174,46 +161,34 @@ public class RandomPerson extends Activity
             addToFavs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(testMember.getHouseOrSenate().equals("House")){
-                        saveToHouseList();
-                    } else {
-                        saveToSenateList();
+                    try {
+                        saveToCongressList();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                     Intent intent1 = new Intent(getActivity(), PersonDetail.class);
                     intent1.putExtra("apiCall", testMember.getApiCall());
                     startActivity(intent1);
                 }
             });
+
             return rootView;
         }
 
-        private void saveToSenateList() {
-            List<CongressMember> senateList = new ArrayList<CongressMember>();
-            senateList.add(testMember);
-            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
-            SharedPreferences.Editor editor = pref.edit();
-            String json = new Gson().toJson(senateList);
-            editor.putString("SenateList", json);
-            editor.apply();
-        }
+        private void saveToCongressList() throws IOException{
+            favList.add(testMember);
 
-        private void saveToHouseList() {
-            //List<CongressMember> houseList = new ArrayList<CongressMember>();
-            //houseList.add(testMember);
-            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
-            SharedPreferences.Editor editor = pref.edit();
-            String json = new Gson().toJson(testMember);
-            System.out.println(json);
-            try {
-                //FileWriter writer = new FileWriter("c:\\Housefile.json");
-                FileOutputStream fos = getActivity().openFileOutput("houseFile.txt", Context.MODE_PRIVATE);
+            /*FileOutputStream fos = getActivity().openFileOutput("congressFile.txt", Context.MODE_PRIVATE);
+            for (CongressMember congressMember : favList) {
+                String json = new Gson().toJson(congressMember);
                 fos.write(json.getBytes());
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            editor.putString("HouseList", json);
-            editor.apply();
+                    //fos.close();
+            }*/
+            //String testing = favList.toString();
+            //String json = new Gson().toJson(testing);
+            //System.out.println(json);
+            //fos.write(json.getBytes());
+            //fos.close();
         }
 
         @Override
@@ -221,22 +196,30 @@ public class RandomPerson extends Activity
             super.onAttach(activity);
             ((RandomPerson) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+
+        }
+
+        @Override
+        public void onSaveInstanceState(Bundle outState){
+            super.onSaveInstanceState(outState);
+            outState.putBoolean("saved", true);
         }
 
         @Override
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
             try {
-                readFile();
+                if(savedInstanceState !=null){
+                System.out.println("Saved Instance State is not null.");
+                } else {
+
+                    readFile();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("File does not exist.");
                 requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/senate/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
                 requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/house/members/current.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
-
-            }
-            if(savedInstanceState !=null){
-                System.out.println("Saved Instance State is not null.");
             }
         }
 
@@ -253,6 +236,7 @@ public class RandomPerson extends Activity
         }
 
         public void readFile() throws IOException{
+
             FileInputStream fis = getActivity().openFileInput("APISenateData.txt");
             BufferedInputStream bis = new BufferedInputStream(fis);
             StringBuffer b = new StringBuffer();
@@ -283,12 +267,12 @@ public class RandomPerson extends Activity
         public void getPerson(){
             Random randomGenerator = new Random();
             int randomInt = randomGenerator.nextInt(540);
-            System.out.println(randomInt);
+
             testMember = cList.get(randomInt);
         }
 
         public void display(){
-            System.out.println(cList.size());
+
             personName.setText(testMember.getName());
             personState.setText(testMember.getState());
             personHouseOrSenate.setText(testMember.getHouseOrSenate());
@@ -336,4 +320,5 @@ public class RandomPerson extends Activity
             }
         }
     }
+
 }
