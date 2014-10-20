@@ -177,18 +177,6 @@ public class RandomPerson extends Activity
 
         private void saveToCongressList() throws IOException{
             favList.add(testMember);
-
-            /*FileOutputStream fos = getActivity().openFileOutput("congressFile.txt", Context.MODE_PRIVATE);
-            for (CongressMember congressMember : favList) {
-                String json = new Gson().toJson(congressMember);
-                fos.write(json.getBytes());
-                    //fos.close();
-            }*/
-            //String testing = favList.toString();
-            //String json = new Gson().toJson(testing);
-            //System.out.println(json);
-            //fos.write(json.getBytes());
-            //fos.close();
         }
 
         @Override

@@ -200,47 +200,6 @@ public class FavListFragment extends Fragment implements AbsListView.OnItemClick
     }
 
     public void getPeople(){
-        //favList.clear();
-        /*try {
-            FileInputStream fis = getActivity().openFileInput("congressFile.txt");
-            BufferedInputStream br = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (br.available() != 0) {
-                char c = (char) br.read();
-                b.append(c);
-            }
-            String testString = b.toString();
-            if (testString.isEmpty()){
-                System.out.println("No Person Added.");
-            } else {
-                System.out.println(testString);
-                //Type type = new TypeToken<List<CongressMember>>(){}.getType();
-                //CongressMember[] inpList = new Gson().fromJson(testString, CongressMember[].class);
-                JsonParser parser = new JsonParser();
-                JsonArray jArray = parser.parse(testString).getAsJsonArray();
-                for(JsonElement obj : jArray ){
-                    CongressMember inpList = new Gson().fromJson(obj, CongressMember.class);
-                    if (inpList.getHouseOrSenate().equals("House")) {
-                        HOUSE_PEOPLE.add(inpList);
-                    } else if (inpList.getHouseOrSenate().equals("Senate")) {
-                        SENATE_PEOPLE.add(inpList);
-                    }
-                }
-                for (CongressMember congressMember : inpList) {
-                    if (congressMember.getHouseOrSenate().equals("House")) {
-                        HOUSE_PEOPLE.add(congressMember);
-                    } else if (congressMember.getHouseOrSenate().equals("Senate")) {
-                        SENATE_PEOPLE.add(congressMember);
-                    }
-                }
-                String clear = "";
-                FileOutputStream fos = getActivity().openFileOutput("congressFile.txt", Context.MODE_PRIVATE);
-                fos.write(clear.getBytes());
-                fos.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         if (favList.isEmpty()){
             System.out.println("No Person Added.");
         } else {
