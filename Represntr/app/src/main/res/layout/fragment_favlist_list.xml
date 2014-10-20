@@ -5,10 +5,23 @@
     android:layout_height="match_parent"
     tools:context="com.firstproject.androidstudio.matthewashton.represntr.FavListFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Favorite Congress Persons List"
+        android:id="@+id/title"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title"
         android:id="@+id/houseButton"
+        android:textSize="17sp"
         android:text="House of Representatives"/>
 
     <Button
@@ -18,7 +31,9 @@
         android:text="Senate"
         android:layout_above="@+id/congressList"
         android:layout_toEndOf="@id/houseButton"
-        android:layout_toRightOf="@+id/houseButton"/>
+        android:layout_toRightOf="@+id/houseButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <ListView
         android:id="@+id/congressList"

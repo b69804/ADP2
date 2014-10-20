@@ -1,7 +1,7 @@
 package com.firstproject.androidstudio.matthewashton.represntr;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.util.JsonReader;
+import android.graphics.Color;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -77,25 +77,25 @@ public class FavListFragment extends Fragment implements AbsListView.OnItemClick
         mListView = (ListView) view.findViewById(R.id.congressList);
         house = (Button)view.findViewById(R.id.houseButton);
         senate = (Button)view.findViewById(R.id.senateButton);
-        house.setFocusable(true);
-        senate.setFocusable(false);
+        house.setBackgroundColor(Color.parseColor("#B1C3F9"));
+        senate.setBackgroundColor(Color.parseColor("#B5D7D6"));
         house.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                house.setBackgroundColor(Color.parseColor("#CDFFFF"));
+                senate.setBackgroundColor(Color.parseColor("#B5D7D6"));
                 displayHouse();
-                senate.setFocusable(false);
-
             }
         });
         senate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                house.setFocusable(false);
+                house.setBackgroundColor(Color.parseColor("#B1C3F9"));
+                senate.setBackgroundColor(Color.parseColor("#B6FCD5"));
                 displaySenate();
-
             }
         });
-        displayHouse();
+        //displayHouse();
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
