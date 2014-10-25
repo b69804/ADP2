@@ -98,5 +98,38 @@ public class JSONParser {
         }
     }
 
+    public static List<Bill> parseBill(String result){
+        try {
+
+            JSONObject jObj = new JSONObject(result);
+            JSONArray newObj = jObj.getJSONArray("results");
+            JSONObject ar = newObj.getJSONObject(0);
+            JSONArray obj = ar.getJSONArray("bills");
+            List<Bill> billList = new ArrayList<Bill>();
+
+            for (int i = 0; i < obj.length(); i++) {
+                JSONObject testObject = obj.getJSONObject(i);
+                String billTitle = testObject.getString("title");
+                String billNumber = testObject.getString("number");
+                String billCommittee = testObject.getString("committees");
+                String billUpdate = testObject.getString("latest_major_action_date");
+                String billURI = testObject.getString("bill_uri");
+                String billIntroduced = testObject.getString("introduced_date");
+                Bill eachBill = new Bill();
+                eachBill.setTitle(billTitle);
+                eachBill.setNumber(billNumber);
+                eachBill.setIntroduced(billIntroduced);
+                eachBill.setBillURI(billURI);
+                eachBill.setCommittee(billCommittee);
+                eachBill.setLastUpdate(billUpdate);
+                billList.add(eachBill);
+            }
+            return billList;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

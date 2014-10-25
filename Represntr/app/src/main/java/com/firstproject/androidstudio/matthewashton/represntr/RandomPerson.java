@@ -63,6 +63,11 @@ public class RandomPerson extends Activity
                         .replace(R.id.container, FavListFragment.newInstance(position + 1))
                         .commit();
                 break;
+            case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, CurrentBillsFragment.newInstance(position + 1))
+                        .commit();
+                break;
             case 3:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, Feedback.newInstance(position + 1))
