@@ -14,6 +14,7 @@ public class Bill {
     private String lastUpdate;
     private String committee;
     private String billURI;
+    private String billSponsor;
 
 
     public String getTitle() {
@@ -65,5 +66,13 @@ public class Bill {
 
     public void setBillURI(String billURI) {
         this.billURI = billURI;
+    }
+
+    public String getBillSponsor() {
+        return billSponsor;
+    }
+
+    public void setBillSponsor(String billSponsor) {
+        this.billSponsor = billSponsor;
     }
 }

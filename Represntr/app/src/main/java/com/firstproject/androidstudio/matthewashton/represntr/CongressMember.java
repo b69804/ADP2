@@ -22,6 +22,7 @@ public class CongressMember implements Serializable {
     private String lastVote;
     private String billsSponsored;
     private String apiCall;
+    private String memberID;
     private int randomID;
 
     public CongressMember (int id, String congressID){
@@ -145,4 +146,12 @@ public class CongressMember implements Serializable {
     public static List<String> HOUSE_NAMES = new ArrayList<String>();
     public static List<String> SENATE_NAMES = new ArrayList<String>();
     public static List<CongressMember> favList = new ArrayList<CongressMember>() {};
+
+    public String getMemberID() {
+        return memberID;
+    }
+
+    public void setMemberID(String memberID) {
+        this.memberID = memberID;
+    }
 }

@@ -1,6 +1,9 @@
 package com.firstproject.androidstudio.matthewashton.represntr;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -19,13 +22,17 @@ import java.util.List;
 
 import static com.firstproject.androidstudio.matthewashton.represntr.Bill.HOUSE_BILLS;
 import static com.firstproject.androidstudio.matthewashton.represntr.Bill.SENATE_BILLS;
+import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.HOUSE_PEOPLE;
+import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.SENATE_PEOPLE;
 
 public class CurrentBillsFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     Boolean houseOrSenate;
+    Boolean yesOrNo;
     Button houseBills;
     Button senateBills;
+    String billAPI;
 
     private OnFragmentInteractionListener mListener;
     private AbsListView mListView;
@@ -46,7 +53,7 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         callHouseBills();
-        callSenateBills();
+
     }
 
     @Override
@@ -54,27 +61,54 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_currentbills, container, false);
         houseBills = (Button)view.findViewById(R.id.houseBillButton);
+        houseBills.setBackgroundColor(Color.parseColor("#96b3d8"));
         houseBills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                houseBills.setBackgroundColor(Color.parseColor("#2E67B2"));
+                senateBills.setBackgroundColor(Color.parseColor("#d8bb96"));
                 displayHouseBills();
+                yesOrNo = true;
             }
         });
         senateBills = (Button)view.findViewById(R.id.senateBillButton);
+        senateBills.setBackgroundColor(Color.parseColor("#d8bb96"));
         senateBills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                senateBills.setBackgroundColor(Color.parseColor("#b2792e"));
+                houseBills.setBackgroundColor(Color.parseColor("#96b3d8"));
                 displaySenateBills();
+                yesOrNo = false;
             }
         });
         mListView = (AbsListView) view.findViewById(R.id.listOfBills);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (yesOrNo){
+                    Bill selectedBill = HOUSE_BILLS.get(position);
+                    billAPI = selectedBill.getBillURI();
+                } else {
+                    Bill selectedBill = SENATE_BILLS.get(position);
+                    billAPI = selectedBill.getBillURI();
+                }
+                FragmentManager fMag = getFragmentManager();
 
+                fMag.beginTransaction()
+                        .add(R.id.container, BillDetail.newInstance(billAPI))
+                        .addToBackStack("billStack")
+                        .remove(CurrentBillsFragment.this)
+                        .commit();
+            }
+        });
         return view;
     }
 
     public void callHouseBills(){
         houseOrSenate = true;
         requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/house/bills/introduced.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
+
     }
 
     public void callSenateBills(){
@@ -89,7 +123,6 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
             String billTitle = bill.getTitle();
             billTitles.add(billTitle);
         }
-        System.out.println(SENATE_BILLS);
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, billTitles);
         mListView.setAdapter(adapter);
@@ -102,7 +135,6 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
             String billTitle = bill.getTitle();
             billTitles.add(billTitle);
         }
-        System.out.println(HOUSE_BILLS);
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, billTitles);
         mListView.setAdapter(adapter);
@@ -169,12 +201,11 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
         protected void onPostExecute(String result) {
             if (houseOrSenate) {
                 HOUSE_BILLS = JSONParser.parseBill(result);
-                System.out.println(HOUSE_BILLS);
+                callSenateBills();
             } else {
                 SENATE_BILLS = JSONParser.parseBill(result);
 
             }
-
         }
     }
 }

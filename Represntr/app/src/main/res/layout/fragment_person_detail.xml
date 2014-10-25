@@ -9,8 +9,24 @@
     tools:context="com.firstproject.androidstudio.matthewashton.represntr.PersonDetail$PlaceholderFragment">
 
     <TextView
+        android:text="Name: "
+        android:textStyle="bold"
+        android:id="@+id/nameOfPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
         android:hint="Selected Name"
         android:id="@+id/individualName"
+        android:layout_toRightOf="@id/nameOfPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="State: "
+        android:textStyle="bold"
+        android:id="@+id/stateOfPerson"
+        android:layout_below="@id/nameOfPerson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -18,56 +34,120 @@
         android:hint="Selected State"
         android:id="@+id/individualState"
         android:layout_width="wrap_content"
+        android:layout_below="@id/nameOfPerson"
         android:layout_height="wrap_content"
-        android:layout_below="@id/individualName"/>
+        android:layout_toRightOf="@id/stateOfPerson"/>
+
+    <TextView
+        android:text="Party: "
+        android:textStyle="bold"
+        android:id="@+id/partyOfPerson"
+        android:layout_below="@id/stateOfPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:hint="Selected Party"
         android:id="@+id/individualParty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/partyOfPerson"
         android:layout_below="@id/individualState"/>
+
+    <TextView
+        android:text="Congress Branch: "
+        android:textStyle="bold"
+        android:id="@+id/branchOfPerson"
+        android:layout_below="@id/partyOfPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:hint="Selected Congress"
         android:id="@+id/individualCongressBranch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/branchOfPerson"
         android:layout_below="@id/individualParty"/>
+
+    <TextView
+        android:text="Date of Birth: "
+        android:textStyle="bold"
+        android:id="@+id/dobOfPerson"
+        android:layout_below="@id/branchOfPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:hint="Selected DOB"
         android:id="@+id/dob"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/dobOfPerson"
         android:layout_below="@id/individualCongressBranch"/>
 
     <TextView
-        android:hint="Selected Bills Sponsored"
+        android:text="No. of Bills Currently Sponsoring: "
+        android:textStyle="bold"
+        android:id="@+id/billsTheySponsor"
+        android:layout_below="@id/dobOfPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:hint="Bills"
         android:id="@+id/billsSponsored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/billsTheySponsor"
         android:layout_below="@id/dob"/>
 
     <TextView
-        android:hint="Selected Votes with Party"
+        android:text="Votes with Party Percentage: "
+        android:textStyle="bold"
+        android:id="@+id/votesParty"
+        android:layout_below="@id/billsTheySponsor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:hint="Votes w/ Party"
         android:id="@+id/votesWithParty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/votesParty"
         android:layout_below="@id/billsSponsored"/>
+
+    <TextView
+        android:text="Missed Votes Percentage: "
+        android:textStyle="bold"
+        android:id="@+id/missedVotes"
+        android:layout_below="@id/votesParty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:hint="Selected Missed Votes"
         android:id="@+id/votesMissed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/missedVotes"
         android:layout_below="@id/votesWithParty"/>
+
+    <TextView
+        android:text="Last Voted: "
+        android:textStyle="bold"
+        android:id="@+id/lastVoteMade"
+        android:layout_below="@id/missedVotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:hint="Selected Last Vote"
         android:id="@+id/lastVote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lastVoteMade"
         android:layout_below="@id/votesMissed"/>
 
     <Button
@@ -76,7 +156,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lastVote"
-        android:layout_marginTop="20dp"
-        android:textColor="#0060B6"/>
+        android:layout_marginTop="15dp"
+        android:textColor="#2E67B2" />
+
+    <Button
+        android:hint="Show Bills they Sponsor"
+        android:id="@+id/currentSponsoredBills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/website"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listOfSponsoredBills"
+        android:layout_below="@+id/currentSponsoredBills"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+    </ListView>
 
 </RelativeLayout>

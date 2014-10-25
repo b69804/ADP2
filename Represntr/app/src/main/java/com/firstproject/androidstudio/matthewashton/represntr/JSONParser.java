@@ -59,7 +59,7 @@ public class JSONParser {
             JSONObject jObj = new JSONObject(result);
             JSONArray newObj = jObj.getJSONArray("results");
             JSONObject ar = newObj.getJSONObject(0);
-
+            String memID = ar.getString("member_id");
             String firstName = ar.getString("first_name");
             String lastName = ar.getString("last_name");
             String tomID = ar.getString("thomas_id");
@@ -78,6 +78,7 @@ public class JSONParser {
 
             String fullName = firstName + " " + lastName;
             eachPerson = new CongressMember(thomasID, tomID);
+            eachPerson.setMemberID(memID);
             eachPerson.setName(fullName);
             eachPerson.setHouseOrSenate(houseOrSenate);
             eachPerson.setDob(personDOB);
@@ -110,13 +111,14 @@ public class JSONParser {
             for (int i = 0; i < obj.length(); i++) {
                 JSONObject testObject = obj.getJSONObject(i);
                 String billTitle = testObject.getString("title");
+                String newTitle = billTitle.replace("&#x27;", "'");
                 String billNumber = testObject.getString("number");
                 String billCommittee = testObject.getString("committees");
                 String billUpdate = testObject.getString("latest_major_action_date");
                 String billURI = testObject.getString("bill_uri");
                 String billIntroduced = testObject.getString("introduced_date");
                 Bill eachBill = new Bill();
-                eachBill.setTitle(billTitle);
+                eachBill.setTitle(newTitle);
                 eachBill.setNumber(billNumber);
                 eachBill.setIntroduced(billIntroduced);
                 eachBill.setBillURI(billURI);
@@ -131,5 +133,35 @@ public class JSONParser {
         }
     }
 
+    public static Bill parseIndividualBill(String result){
+        Bill selectedBill;
+
+        try{
+            JSONObject jObj = new JSONObject(result);
+            JSONArray newObj = jObj.getJSONArray("results");
+            JSONObject ar = newObj.getJSONObject(0);
+
+            String billTitle = ar.getString("title");
+            String billNumber = ar.getString("bill");
+            String billSponsor = ar.getString("sponsor");
+            String billCommittee = ar.getString("committees");
+            String billUpdate = ar.getString("latest_major_action_date");
+            String billIntro = ar.getString("introduced_date");
+            selectedBill = new Bill();
+            selectedBill.setTitle(billTitle);
+            selectedBill.setNumber(billNumber);
+            selectedBill.setCommittee(billCommittee);
+            selectedBill.setIntroduced(billIntro);
+            selectedBill.setLastUpdate(billUpdate);
+            selectedBill.setBillSponsor(billSponsor);
+            return selectedBill;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
 
 }

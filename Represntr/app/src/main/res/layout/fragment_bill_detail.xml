@@ -1,0 +1,126 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context="com.firstproject.androidstudio.matthewashton.represntr.BillDetail">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleOfBill"
+        android:text="Title of Bill"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedBillTitle"
+        android:text="Title of Bill"
+        android:textSize="22sp"
+        android:layout_below="@+id/titleOfBill"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/billNumber"
+        android:text="Bill #"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_below="@+id/selectedBillTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lastUpdate"
+        android:text="Last Updated On"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_below="@+id/selectedBillTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedBillNumber"
+        android:text="Number of Bill"
+        android:textSize="22sp"
+        android:layout_below="@+id/billNumber"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedBillUpdate"
+        android:text="Date"
+        android:textSize="22sp"
+        android:layout_alignTop="@+id/selectedBillNumber"
+        android:layout_alignRight="@+id/lastUpdate"
+        android:layout_alignEnd="@+id/lastUpdate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Sponsors"
+        android:layout_below="@id/selectedBillNumber"
+        android:text="Sponsor of this Bill"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SponsorsOfBill"
+        android:layout_below="@id/Sponsors"
+        android:text="Sponsor of this Bill"
+        android:layout_marginTop="5dp"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Committee"
+        android:layout_below="@id/SponsorsOfBill"
+        android:text="Committee"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BillCommittee"
+        android:layout_below="@id/Committee"
+        android:text="Committee this Bill is in"
+        android:layout_marginTop="5dp"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/OriginalIntroDate"
+        android:layout_below="@id/BillCommittee"
+        android:text="Introduced Date"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BillOriginalIntroDate"
+        android:layout_below="@id/OriginalIntroDate"
+        android:text="Date Bill was introduced"
+        android:layout_marginTop="5dp"
+        android:textSize="22sp"/>
+
+</RelativeLayout>

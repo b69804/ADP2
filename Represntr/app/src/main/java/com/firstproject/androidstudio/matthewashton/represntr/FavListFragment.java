@@ -65,21 +65,21 @@ public class FavListFragment extends Fragment implements AbsListView.OnItemClick
         mListView = (ListView) view.findViewById(R.id.congressList);
         house = (Button)view.findViewById(R.id.houseButton);
         senate = (Button)view.findViewById(R.id.senateButton);
-        house.setBackgroundColor(Color.parseColor("#B1C3F9"));
-        senate.setBackgroundColor(Color.parseColor("#B5D7D6"));
+        house.setBackgroundColor(Color.parseColor("#96b3d8"));
+        senate.setBackgroundColor(Color.parseColor("#d8bb96"));
         house.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                house.setBackgroundColor(Color.parseColor("#CDFFFF"));
-                senate.setBackgroundColor(Color.parseColor("#B5D7D6"));
+                house.setBackgroundColor(Color.parseColor("#2E67B2"));
+                senate.setBackgroundColor(Color.parseColor("#d8bb96"));
                 displayHouse();
             }
         });
         senate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                house.setBackgroundColor(Color.parseColor("#B1C3F9"));
-                senate.setBackgroundColor(Color.parseColor("#B6FCD5"));
+                house.setBackgroundColor(Color.parseColor("#96b3d8"));
+                senate.setBackgroundColor(Color.parseColor("#b2792e"));
                 displaySenate();
             }
         });

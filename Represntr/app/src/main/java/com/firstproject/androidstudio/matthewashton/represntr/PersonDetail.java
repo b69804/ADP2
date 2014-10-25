@@ -3,6 +3,7 @@ package com.firstproject.androidstudio.matthewashton.represntr;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PersonDetail extends Activity {
 
@@ -51,6 +57,7 @@ public class PersonDetail extends Activity {
 
         String apiPersonData;
         String apiCall;
+        String memberID;
         CongressMember selectedCongressPerson;
         TextView name;
         TextView state;
@@ -62,6 +69,10 @@ public class PersonDetail extends Activity {
         TextView missedVotes;
         TextView lastVote;
         Button website;
+        Button bills;
+        ListView theirBills;
+        Boolean yesOrNo;
+        List<Bill> listOfTheirBills = new ArrayList<Bill>();
 
         public detailFrag() {
         }
@@ -73,7 +84,7 @@ public class PersonDetail extends Activity {
             Bundle b = getArguments();
             String passAPI = b.getString("apiCall");
             apiCall = passAPI.concat("?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
-
+            yesOrNo = true;
             requestData(apiCall);
             name = (TextView)rootView.findViewById(R.id.individualName);
             state = (TextView)rootView.findViewById(R.id.individualState);
@@ -84,6 +95,19 @@ public class PersonDetail extends Activity {
             missedVotes = (TextView)rootView.findViewById(R.id.votesMissed);
             lastVote = (TextView)rootView.findViewById(R.id.lastVote);
             website = (Button)rootView.findViewById(R.id.website);
+            website.setBackgroundColor(Color.parseColor("#d8bb96"));
+            bills = (Button)rootView.findViewById(R.id.currentSponsoredBills);
+            bills.setText("Show Bills they Sponsor");
+            bills.setBackgroundColor(Color.parseColor("#96b3d8"));
+            theirBills = (ListView)rootView.findViewById(R.id.listOfSponsoredBills);
+            theirBills.setVisibility(View.INVISIBLE);
+            bills.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    theirBills.setVisibility(View.VISIBLE);
+                    displaySenateBills();
+                }
+            });
             houseOrSenate = (TextView)rootView.findViewById(R.id.individualCongressBranch);
             return rootView;
         }
@@ -103,7 +127,11 @@ public class PersonDetail extends Activity {
             votesWithParty.setText(selectedCongressPerson.getVotesWithParty());
             missedVotes.setText(selectedCongressPerson.getMissedVotes());
             lastVote.setText(selectedCongressPerson.getLastVote());
+            memberID = selectedCongressPerson.getMemberID();
+            yesOrNo = false;
+            requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/" + memberID + "/bills/updated.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
             website.setText(selectedCongressPerson.getWebsite());
+
             website.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -113,6 +141,20 @@ public class PersonDetail extends Activity {
                 }
             });
         }
+
+        private void displaySenateBills() {
+            List<String> billTitles = new ArrayList<String>();
+
+            for (Bill bill : listOfTheirBills) {
+                String billTitle = bill.getTitle();
+                billTitles.add(billTitle);
+            }
+            ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_list_item_1, android.R.id.text1, billTitles);
+            theirBills.setAdapter(adapter);
+        }
+
+
 
         private void requestData(String uri){
             ApiTask task = new ApiTask();
@@ -132,9 +174,14 @@ public class PersonDetail extends Activity {
 
             @Override
             protected void onPostExecute(String result) {
-                apiPersonData = result;
-                selectedCongressPerson = JSONParser.parsePerson(result);
-                showPerson();
+                if(yesOrNo){
+                    apiPersonData = result;
+                    selectedCongressPerson = JSONParser.parsePerson(result);
+                    showPerson();
+                } else {
+                    listOfTheirBills = JSONParser.parseBill(result);
+                }
+
             }
         }
     }

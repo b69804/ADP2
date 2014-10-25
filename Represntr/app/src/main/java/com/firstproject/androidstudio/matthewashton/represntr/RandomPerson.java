@@ -3,12 +3,12 @@ package com.firstproject.androidstudio.matthewashton.represntr;
 import android.app.Activity;
 
 import android.app.ActionBar;
-import android.app.IntentService;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.BroadcastReceiver;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +28,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import android.os.Handler;
+
 
 import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.favList;
 
@@ -37,6 +39,10 @@ public class RandomPerson extends Activity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
 
+    private ProgressDialog prog;
+    private int progressBarStatus = 0;
+    private Handler progressBarbHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +50,32 @@ public class RandomPerson extends Activity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        mNavigationDrawerFragment.setUp(
+        prog = new ProgressDialog(this);
+        prog.setMessage("Getting Congress Data ");
+        prog.setIndeterminate(true);
+        prog.show();
+        new Thread(new Runnable() {
+            public void run() {
+                while (progressBarStatus < 100){
+                    try {
+                        Thread.sleep(2000);
+                        progressBarStatus += 20;
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (progressBarStatus >= 100) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    prog.dismiss();
+                }
+            }
+        }).start();
+            mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
@@ -155,6 +186,8 @@ public class RandomPerson extends Activity
             addToFavs = (Button)rootView.findViewById(R.id.like);
             addToFavs.setVisibility(View.INVISIBLE);
             next = (Button)rootView.findViewById(R.id.dislike);
+            addToFavs.setBackgroundColor(Color.parseColor("#96b3d8"));
+            next.setBackgroundColor(Color.parseColor("#d8bb96"));
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
