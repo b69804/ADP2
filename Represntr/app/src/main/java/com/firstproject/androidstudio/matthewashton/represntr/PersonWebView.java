@@ -1,7 +1,6 @@
 package com.firstproject.androidstudio.matthewashton.represntr;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

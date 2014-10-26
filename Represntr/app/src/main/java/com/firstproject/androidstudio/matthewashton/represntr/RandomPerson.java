@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 import android.widget.Button;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Random;

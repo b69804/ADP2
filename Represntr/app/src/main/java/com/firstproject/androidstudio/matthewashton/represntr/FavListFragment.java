@@ -1,7 +1,6 @@
 package com.firstproject.androidstudio.matthewashton.represntr;
 
 import android.app.Activity;
-import android.content.res.ColorStateList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -10,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.graphics.Color;
-
-import java.util.Map;
 
 import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.SENATE_PEOPLE;
 import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.HOUSE_PEOPLE;
@@ -24,10 +20,7 @@ import static com.firstproject.androidstudio.matthewashton.represntr.CongressMem
 import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.SENATE_NAMES;
 import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.MAP_OF_HOUSE;
 import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.MAP_OF_SENATE;
-import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.data;
-import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.houseMap;
 import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.favList;
-
 
 public class FavListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
