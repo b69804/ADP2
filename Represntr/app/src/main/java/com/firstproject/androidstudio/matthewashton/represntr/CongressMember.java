@@ -25,9 +25,9 @@ public class CongressMember implements Serializable {
     private String memberID;
     private int randomID;
 
-    public CongressMember (int id, String congressID){
-        id = randomID;
-        congressID = uniqueID;
+    public CongressMember (String congressName, String congressState){
+        this.name = congressName;
+        this.state = congressState;
     };
 
 

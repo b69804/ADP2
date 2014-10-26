@@ -22,7 +22,7 @@ public class BillDetail extends Fragment {
     TextView billComm;
     TextView billSponsor;
     TextView billIntroDate;
-    Bill selectedBill = new Bill();
+    Bill selectedBill;
 
     public static BillDetail newInstance(String param1) {
         BillDetail fragment = new BillDetail();

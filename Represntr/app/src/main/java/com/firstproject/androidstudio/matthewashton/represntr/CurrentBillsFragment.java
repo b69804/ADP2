@@ -1,8 +1,10 @@
 package com.firstproject.androidstudio.matthewashton.represntr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.Intent;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,22 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.firstproject.androidstudio.matthewashton.represntr.Bill.HOUSE_BILLS;
 import static com.firstproject.androidstudio.matthewashton.represntr.Bill.SENATE_BILLS;
-import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.HOUSE_PEOPLE;
-import static com.firstproject.androidstudio.matthewashton.represntr.CongressMember.SENATE_PEOPLE;
 
 public class CurrentBillsFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private ProgressDialog prog;
+    private int progressBarStatus = 0;
     Boolean houseOrSenate;
     Boolean yesOrNo;
     Button houseBills;
@@ -36,7 +33,6 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
 
     private OnFragmentInteractionListener mListener;
     private AbsListView mListView;
-    private ListAdapter mAdapter;
 
     public static CurrentBillsFragment newInstance(int sectionNumber) {
         CurrentBillsFragment fragment = new CurrentBillsFragment();
@@ -53,7 +49,31 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         callHouseBills();
+        prog = new ProgressDialog(getActivity());
+        prog.setMessage("Getting the Most Recently Updated Bills in Congress...");
+        prog.setIndeterminate(true);
+        prog.show();
+        new Thread(new Runnable() {
+            public void run() {
+                while (progressBarStatus < 100){
+                    try {
+                        Thread.sleep(1000);
+                        progressBarStatus += 20;
 
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (progressBarStatus >= 100) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    prog.dismiss();
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -108,7 +128,6 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
     public void callHouseBills(){
         houseOrSenate = true;
         requestData("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/house/bills/introduced.json?api-key=6173918a265302ce206200f5d9d3b18e:4:69646428");
-
     }
 
     public void callSenateBills(){
@@ -117,27 +136,47 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
     }
 
     private void displaySenateBills() {
-        List<String> billTitles = new ArrayList<String>();
-
-        for (Bill bill : SENATE_BILLS) {
-            String billTitle = bill.getTitle();
-            billTitles.add(billTitle);
+        if(SENATE_BILLS != null) {
+            Bill[] billThing = new Bill[SENATE_BILLS.size()];
+            int billCount = 0;
+            for (Bill bill : SENATE_BILLS) {
+                billThing[billCount] = new Bill(bill.getNumber(), bill.getTitle());
+                billCount++;
+                }
+            ArrayAdapterItem adapterItem = new ArrayAdapterItem(getActivity(), R.layout.list_view_row_item, billThing);
+            mListView.setAdapter(adapterItem);
+        } else {
+            showAlert();
         }
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, billTitles);
-        mListView.setAdapter(adapter);
     }
 
     private void displayHouseBills() {
-        List<String> billTitles = new ArrayList<String>();
-
-        for (Bill bill : HOUSE_BILLS) {
-            String billTitle = bill.getTitle();
-            billTitles.add(billTitle);
+        if (HOUSE_BILLS != null){
+            Bill[] billThing = new Bill[HOUSE_BILLS.size()];
+            int billCount = 0;
+            for (Bill bill : HOUSE_BILLS) {
+                billThing[billCount] = new Bill(bill.getNumber(), bill.getTitle());
+                billCount++;
+                }
+            ArrayAdapterItem adapterItem = new ArrayAdapterItem(getActivity(), R.layout.list_view_row_item, billThing);
+            mListView.setAdapter(adapterItem);
+        } else {
+            showAlert();
         }
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, billTitles);
-        mListView.setAdapter(adapter);
+    }
+
+    public void showAlert() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle("Uh-Oh!");
+        alertDialogBuilder
+                .setMessage("Something Went Wrong with the API Call.")
+                .setCancelable(false)
+                .setPositiveButton("Please try again.",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -158,13 +197,11 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
         mListener = null;
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            //mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
         }
     }
 
@@ -194,6 +231,9 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
         @Override
         protected String doInBackground(String... params){
             String content = HTTPManager.getData(params[0]);
+            if (content == null){
+                showAlert();
+            }
             return content;
         }
 
@@ -204,7 +244,6 @@ public class CurrentBillsFragment extends Fragment implements AbsListView.OnItem
                 callSenateBills();
             } else {
                 SENATE_BILLS = JSONParser.parseBill(result);
-
             }
         }
     }

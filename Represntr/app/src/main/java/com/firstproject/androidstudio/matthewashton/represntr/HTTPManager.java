@@ -13,7 +13,6 @@ import java.net.URL;
 public class HTTPManager {
     public static String getData(String uri){
         BufferedReader reader = null;
-
         try {
             URL url = new URL(uri);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -29,6 +28,7 @@ public class HTTPManager {
             e.printStackTrace();
             return null;
         } catch (IOException e) {
+
             e.printStackTrace();
             return null;
         } finally {

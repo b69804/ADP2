@@ -32,7 +32,7 @@ public class JSONParser {
                 String personAPICall = testObject.getString("api_uri");
 
                 String fullName = firstName + " " + lastName;
-                CongressMember eachPerson = new CongressMember(i, uniID);
+                CongressMember eachPerson = new CongressMember(fullName, personState);
                 eachPerson.setName(fullName);
                 eachPerson.setHouseOrSenate(hOrS);
                 eachPerson.setUniqueID(uniID);
@@ -47,6 +47,7 @@ public class JSONParser {
             }
             return congressList;
         } catch (JSONException e) {
+
             e.printStackTrace();
             return null;
         }
@@ -65,7 +66,6 @@ public class JSONParser {
             String tomID = ar.getString("thomas_id");
             String personDOB = ar.getString("date_of_birth");
             String personWebsite = ar.getString("url");
-            int thomasID = Integer.parseInt(tomID);
             JSONArray obj = ar.getJSONArray("roles");
             JSONObject roles = obj.getJSONObject(0);
             String personParty = roles.getString("party");
@@ -77,7 +77,7 @@ public class JSONParser {
             String personLastVote = ar.getString("most_recent_vote");
 
             String fullName = firstName + " " + lastName;
-            eachPerson = new CongressMember(thomasID, tomID);
+            eachPerson = new CongressMember(fullName, personState);
             eachPerson.setMemberID(memID);
             eachPerson.setName(fullName);
             eachPerson.setHouseOrSenate(houseOrSenate);
@@ -117,7 +117,7 @@ public class JSONParser {
                 String billUpdate = testObject.getString("latest_major_action_date");
                 String billURI = testObject.getString("bill_uri");
                 String billIntroduced = testObject.getString("introduced_date");
-                Bill eachBill = new Bill();
+                Bill eachBill = new Bill(billNumber, billTitle);
                 eachBill.setTitle(newTitle);
                 eachBill.setNumber(billNumber);
                 eachBill.setIntroduced(billIntroduced);
@@ -147,7 +147,7 @@ public class JSONParser {
             String billCommittee = ar.getString("committees");
             String billUpdate = ar.getString("latest_major_action_date");
             String billIntro = ar.getString("introduced_date");
-            selectedBill = new Bill();
+            selectedBill = new Bill(billNumber, billTitle);
             selectedBill.setTitle(billTitle);
             selectedBill.setNumber(billNumber);
             selectedBill.setCommittee(billCommittee);
@@ -157,11 +157,8 @@ public class JSONParser {
             return selectedBill;
 
         } catch (JSONException e) {
-            e.printStackTrace();
+
             return null;
         }
-
-
     }
-
 }

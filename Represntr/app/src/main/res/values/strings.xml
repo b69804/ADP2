@@ -14,5 +14,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_person_web_view">PersonWebView</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="appInfo">Represntr was built by Matthew Ashton and is intended to help you gain an understanding of the current members of Congress.  I appreciate any feedback you so I can make Represntr the best source for information regarding Congress members.</string>
+    <string name="voteReminder">See something that you do not like about someone?  Always remember that you have the Right to Vote!  Your Representatives are supposed to Represent the people who elect them so make sure your voice is heard.</string>
 </resources>

@@ -1,8 +1,7 @@
 package com.firstproject.androidstudio.matthewashton.represntr;
 
-
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ShareCompat;
@@ -10,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.net.Uri;
-
 
 public class Feedback extends Fragment {
 
@@ -39,9 +36,9 @@ public class Feedback extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feedback, container, false);
         feedback = (Button)view.findViewById(R.id.submitFeedback);
+        feedback.setBackgroundColor(Color.parseColor("#96b3d8"));
         feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

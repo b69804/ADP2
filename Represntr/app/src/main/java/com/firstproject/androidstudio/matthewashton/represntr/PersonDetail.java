@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,10 +45,6 @@ public class PersonDetail extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -143,18 +138,15 @@ public class PersonDetail extends Activity {
         }
 
         private void displaySenateBills() {
-            List<String> billTitles = new ArrayList<String>();
-
+            Bill[] billThing = new Bill[listOfTheirBills.size()];
+            int billCount = 0;
             for (Bill bill : listOfTheirBills) {
-                String billTitle = bill.getTitle();
-                billTitles.add(billTitle);
+                billThing[billCount] = new Bill(bill.getNumber(), bill.getTitle());
+                billCount++;
             }
-            ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1, android.R.id.text1, billTitles);
-            theirBills.setAdapter(adapter);
+            ArrayAdapterItem adapterItem = new ArrayAdapterItem(getActivity(), R.layout.list_view_row_item, billThing);
+            theirBills.setAdapter(adapterItem);
         }
-
-
 
         private void requestData(String uri){
             ApiTask task = new ApiTask();

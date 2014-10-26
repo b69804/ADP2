@@ -83,7 +83,6 @@ public class FavListFragment extends Fragment implements AbsListView.OnItemClick
                 displaySenate();
             }
         });
-        //displayHouse();
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -162,28 +161,26 @@ public class FavListFragment extends Fragment implements AbsListView.OnItemClick
     }
 
     public void displayHouse(){
-        data.clear();
-        for(Map.Entry<String, CongressMember> entry : MAP_OF_HOUSE.entrySet()){
-            CongressMember value = entry.getValue();
-            houseMap.put("Name", value.getName());
-            houseMap.put("State", value.getState());
+        int houseCount = 0;
+        CongressMember[] memberArray = new CongressMember[HOUSE_PEOPLE.size()];
+        for(CongressMember congressMember : HOUSE_PEOPLE){
+            memberArray[houseCount] = new CongressMember(congressMember.getName(), congressMember.getState());
+            houseCount++;
         }
-        data.add(houseMap);
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, HOUSE_NAMES);
-        mListView.setAdapter(adapter);
+        CongressAdapter adapterItem = new CongressAdapter(getActivity(), R.layout.list_view_row_item, memberArray);
+        mListView.setAdapter(adapterItem);
         senateOrHouse = true;
     }
 
     public void displaySenate(){
-        data.clear();
-        for(Map.Entry<String, CongressMember> entry : MAP_OF_HOUSE.entrySet()){
-            CongressMember value = entry.getValue();
-            houseMap.put("Name", value.getName());
-            houseMap.put("State", value.getState());
+        int houseCount = 0;
+        CongressMember[] memberArray = new CongressMember[SENATE_PEOPLE.size()];
+        for(CongressMember congressMember : SENATE_PEOPLE){
+            memberArray[houseCount] = new CongressMember(congressMember.getName(), congressMember.getState());
+            houseCount++;
         }
-        data.add(houseMap);
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, SENATE_NAMES);
-        mListView.setAdapter(adapter);
+        CongressAdapter adapterItem = new CongressAdapter(getActivity(), R.layout.list_view_row_item, memberArray);
+        mListView.setAdapter(adapterItem);
         senateOrHouse = false;
     }
 

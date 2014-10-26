@@ -16,6 +16,11 @@ public class Bill {
     private String billURI;
     private String billSponsor;
 
+    public Bill(String billNumber, String billTitle){
+        this.number = billNumber;
+        this.title = billTitle;
+    }
+
 
     public String getTitle() {
         return title;
